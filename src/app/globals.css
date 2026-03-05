@@ -1,8 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #06030f;
+  --foreground: #e6f7ff;
+  --cyber-cyan: #67e8f9;
+  --cyber-fuchsia: #d946ef;
+  --cyber-violet: #8b5cf6;
 }
 
 @theme inline {
@@ -12,15 +15,87 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
 }
 
 body {
-  background: var(--background);
+  background:
+    radial-gradient(circle at 12% 14%, rgba(217, 70, 239, 0.2), transparent 35%),
+    radial-gradient(circle at 86% 78%, rgba(103, 232, 249, 0.16), transparent 35%),
+    var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.cyber-grid {
+  background-image:
+    linear-gradient(rgba(103, 232, 249, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(103, 232, 249, 0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(circle at center, black 30%, transparent 95%);
+}
+
+.neon-btn {
+  box-shadow:
+    0 0 0 1px rgba(103, 232, 249, 0.4) inset,
+    0 0 16px rgba(103, 232, 249, 0.25),
+    0 0 32px rgba(217, 70, 239, 0.15);
+  transition: all 0.25s ease;
+}
+
+.neon-btn:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 0 0 1px rgba(103, 232, 249, 0.7) inset,
+    0 0 20px rgba(103, 232, 249, 0.4),
+    0 0 44px rgba(217, 70, 239, 0.22);
+}
+
+.scanline {
+  position: relative;
+  overflow: hidden;
+}
+
+.scanline::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(255, 255, 255, 0.045) 50%,
+    transparent 100%
+  );
+  transform: translateY(-100%);
+  animation: scanline 6s linear infinite;
+  pointer-events: none;
+}
+
+.float-slow {
+  animation: floatSlow 4.5s ease-in-out infinite;
+}
+
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(140%);
+  }
+}
+
+@keyframes floatSlow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
 }
