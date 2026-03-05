@@ -1,7 +1,10 @@
 import Link from "next/link";
 import HeroMatrix from "@/components/HeroMatrix";
+import { LogoutButton } from "@/components/auth/logout-button";
+import { auth } from "@/lib/auth";
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth();
   return (
     <div className="relative min-h-screen overflow-hidden bg-[var(--bg-dark)] text-white">
       <HeroMatrix />
@@ -27,16 +30,29 @@ export default function Home() {
           e futuros possíveis.
         </p>
 
-        <div className="mt-10 flex flex-wrap gap-4">
+        <div className="mt-10 flex flex-wrap items-center gap-4">
           <Link href="/articles" className="cyber-btn">
             Explorar Artigos
           </Link>
-          <Link
-            href="/login"
-            className="rounded-md border-2 border-[var(--neon-pink)] px-6 py-3 text-sm font-bold uppercase tracking-[0.2em] text-[var(--neon-pink)] shadow-[0_0_12px_rgba(255,0,255,.45)] transition hover:bg-[var(--neon-pink)] hover:text-black hover:shadow-[0_0_20px_rgba(255,0,255,.85)]"
-          >
-            Área de Membros
-          </Link>
+
+          {session?.user ? (
+            <>
+              <Link
+                href="/admin"
+                className="rounded-md border-2 border-cyan-300 px-6 py-3 text-sm font-bold uppercase tracking-[0.2em] text-cyan-300 shadow-[0_0_12px_rgba(34,211,238,.45)] transition hover:bg-cyan-300 hover:text-black hover:shadow-[0_0_20px_rgba(34,211,238,.85)]"
+              >
+                Painel
+              </Link>
+              <LogoutButton />
+            </>
+          ) : (
+            <Link
+              href="/login"
+              className="rounded-md border-2 border-[var(--neon-pink)] px-6 py-3 text-sm font-bold uppercase tracking-[0.2em] text-[var(--neon-pink)] shadow-[0_0_12px_rgba(255,0,255,.45)] transition hover:bg-[var(--neon-pink)] hover:text-black hover:shadow-[0_0_20px_rgba(255,0,255,.85)]"
+            >
+              Área de Membros
+            </Link>
+          )}
         </div>
 
         <section className="mt-16 grid gap-4 md:grid-cols-3">
