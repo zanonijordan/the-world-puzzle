@@ -1,3 +1,4 @@
+import Link from "next/link";
 import HeroMatrix from "@/components/HeroMatrix";
 
 export default function Home() {
@@ -27,15 +28,15 @@ export default function Home() {
         </p>
 
         <div className="mt-10 flex flex-wrap gap-4">
-          <a href="/articles" className="cyber-btn">
+          <Link href="/articles" className="cyber-btn">
             Explorar Artigos
-          </a>
-          <a
+          </Link>
+          <Link
             href="/login"
             className="rounded-md border-2 border-[var(--neon-pink)] px-6 py-3 text-sm font-bold uppercase tracking-[0.2em] text-[var(--neon-pink)] shadow-[0_0_12px_rgba(255,0,255,.45)] transition hover:bg-[var(--neon-pink)] hover:text-black hover:shadow-[0_0_20px_rgba(255,0,255,.85)]"
           >
             Área de Membros
-          </a>
+          </Link>
         </div>
 
         <section className="mt-16 grid gap-4 md:grid-cols-3">
