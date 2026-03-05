@@ -7,7 +7,12 @@
 - [x] Implementar Home Cyberpunk com efeito visual inovador
 - [x] Implementar páginas públicas de artigos (listagem e detalhe por slug)
 - [x] Implementar área de membros (login/registro/logout)
-- [ ] Implementar dashboard/admin para CRUD de posts/categorias/tags
+- [x] Implementar dashboard/admin para CRUD de posts/categorias/tags
+- [x] Criar base de dashboard admin protegida (`/admin` + navegação)
+- [x] Implementar API admin de categorias (GET/POST/PUT/DELETE)
+- [x] Implementar API admin de tags (GET/POST/PUT/DELETE)
+- [x] Implementar API admin de posts (GET/POST/PUT/DELETE)
+- [x] Implementar páginas admin de categorias/tags/posts com UI simples funcional
 - [ ] Implementar fluxo de publicação com capa, conteúdo e URL de vídeo
 - [ ] Atualizar estilos globais para tema cyberpunk completo
 - [ ] Validar build/lint e revisar resultado final
