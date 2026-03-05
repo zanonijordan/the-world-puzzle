@@ -9,6 +9,12 @@
   --neon-green: #00ff41;
   --neon-pink: #ff00ff;
   --bg-dark: #050505;
+  --surface-1: rgba(3, 8, 18, 0.7);
+  --surface-2: rgba(0, 0, 0, 0.56);
+  --border-neon: rgba(0, 255, 65, 0.35);
+  --text-muted: rgba(217, 255, 228, 0.78);
+  --glow-green: 0 0 14px rgba(0, 255, 65, 0.5);
+  --glow-pink: 0 0 14px rgba(255, 0, 255, 0.45);
   --font-mono: "Courier New", Courier, monospace;
 }
 
@@ -32,9 +38,16 @@ body {
   background:
     radial-gradient(circle at 12% 14%, rgba(217, 70, 239, 0.2), transparent 35%),
     radial-gradient(circle at 86% 78%, rgba(103, 232, 249, 0.16), transparent 35%),
-    var(--bg-dark);
+    linear-gradient(135deg, #03040a 0%, #06030f 45%, #03050d 100%);
   color: #fff;
   font-family: var(--font-mono);
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgba(0, 255, 65, 0.28);
+  color: #f6fff9;
 }
 
 .cyber-grid {
@@ -46,7 +59,7 @@ body {
 }
 
 .cyber-btn {
-  background: transparent;
+  background: linear-gradient(180deg, rgba(0, 255, 65, 0.06), rgba(0, 255, 65, 0.01));
   border: 2px solid var(--neon-green);
   color: var(--neon-green);
   padding: 10px 20px;
@@ -63,6 +76,64 @@ body {
   background: var(--neon-green);
   color: #000;
   box-shadow: 0 0 20px rgba(0, 255, 65, 0.8), 0 0 40px rgba(0, 255, 65, 0.6);
+}
+
+.cyber-btn:focus-visible {
+  outline: 2px solid var(--cyber-cyan);
+  outline-offset: 2px;
+}
+
+.cyber-card {
+  border: 1px solid var(--border-neon);
+  background: linear-gradient(180deg, rgba(7, 16, 13, 0.7), rgba(0, 0, 0, 0.55));
+  backdrop-filter: blur(4px);
+  box-shadow: inset 0 0 0 1px rgba(0, 255, 65, 0.1), var(--glow-green);
+  border-radius: 0.75rem;
+}
+
+.cyber-input,
+.cyber-select,
+.cyber-textarea {
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(103, 232, 249, 0.28);
+  background: var(--surface-2);
+  color: #ecfff2;
+  padding: 0.7rem 0.85rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cyber-input::placeholder,
+.cyber-textarea::placeholder {
+  color: rgba(203, 255, 217, 0.45);
+}
+
+.cyber-input:focus,
+.cyber-select:focus,
+.cyber-textarea:focus {
+  outline: none;
+  border-color: var(--cyber-cyan);
+  box-shadow: 0 0 0 3px rgba(103, 232, 249, 0.18);
+}
+
+.cyber-chip {
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 0, 255, 0.45);
+  background: rgba(255, 0, 255, 0.09);
+  color: #ffd6ff;
+  font-size: 0.75rem;
+  padding: 0.15rem 0.6rem;
+}
+
+.cyber-link {
+  color: var(--cyber-cyan);
+  text-decoration: none;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.cyber-link:hover {
+  color: #c4f8ff;
+  text-shadow: 0 0 14px rgba(103, 232, 249, 0.75);
 }
 
 .scanline {

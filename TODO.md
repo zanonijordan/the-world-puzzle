@@ -13,6 +13,8 @@
 - [x] Implementar API admin de tags (GET/POST/PUT/DELETE)
 - [x] Implementar API admin de posts (GET/POST/PUT/DELETE)
 - [x] Implementar páginas admin de categorias/tags/posts com UI simples funcional
-- [ ] Implementar fluxo de publicação com capa, conteúdo e URL de vídeo
-- [ ] Atualizar estilos globais para tema cyberpunk completo
-- [ ] Validar build/lint e revisar resultado final
+- [x] Implementar fluxo de publicação com capa, conteúdo e URL de vídeo
+- [x] Atualizar estilos globais para tema cyberpunk completo
+- [x] Expandir tokens globais e utilitários cyberpunk em `globals.css`
+- [x] Rodar validação visual/técnica dos novos estilos
+- [x] Validar build/lint e revisar resultado final
