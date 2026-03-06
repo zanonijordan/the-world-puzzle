@@ -7,7 +7,7 @@ export async function getCurrentSession() {
 export async function requireAuth() {
   const session = await auth();
   if (!session?.user) {
-    throw new Error("Não autenticado.");
+    throw new Error("UNAUTHENTICATED");
   }
   return session;
 }
@@ -15,7 +15,7 @@ export async function requireAuth() {
 export async function requireAdmin() {
   const session = await requireAuth();
   if (session.user.role !== "ADMIN") {
-    throw new Error("Acesso negado.");
+    throw new Error("FORBIDDEN");
   }
   return session;
 }
