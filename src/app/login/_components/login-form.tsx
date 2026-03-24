@@ -19,12 +19,17 @@ export function LoginForm() {
       const result = await signIn("credentials", {
         email,
         password,
-        redirect: true,
+        redirect: false,
         callbackUrl: "/",
       });
 
       if (result?.error) {
         setError("E-mail ou senha inválidos.");
+        return;
+      }
+
+      if (result?.ok) {
+        window.location.href = result.url ?? "/";
       }
     });
   }
