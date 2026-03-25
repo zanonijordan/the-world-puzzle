@@ -21,9 +21,9 @@ export function SiteHeader({ session }: SiteHeaderProps) {
           <Link href="/" className="site-header__link">
             Início
           </Link>
-          <Link href="/articles" className="site-header__link">
+{/*           <Link href="/articles" className="site-header__link">
             Artigos
-          </Link>
+          </Link> */}
 
           {session?.user ? (
             <div className="site-header__auth">
