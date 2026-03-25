@@ -14,7 +14,9 @@ export default function HeroMatrix() {
 
     const chars = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&@";
     const fontSize = 14;
+    const dropInterval = 55;
     let animationFrameId = 0;
+    let lastUpdateTime = 0;
 
     let width = window.innerWidth;
     let height = window.innerHeight;
@@ -32,28 +34,32 @@ export default function HeroMatrix() {
       ctx.fillRect(0, 0, width, height);
     };
 
-    const draw = () => {
+    const draw = (timestamp: number) => {
       ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
       ctx.fillRect(0, 0, width, height);
 
-      ctx.fillStyle = "#00ff41";
-      ctx.font = `${fontSize}px monospace`;
+      if (timestamp - lastUpdateTime >= dropInterval) {
+        ctx.fillStyle = "#00ff41";
+        ctx.font = `${fontSize}px monospace`;
 
-      for (let i = 0; i < drops.length; i++) {
-        const text = chars[Math.floor(Math.random() * chars.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        for (let i = 0; i < drops.length; i++) {
+          const text = chars[Math.floor(Math.random() * chars.length)];
+          ctx.fillText(text, i * fontSize, drops[i] * fontSize);
 
-        if (drops[i] * fontSize > height && Math.random() > 0.975) {
-          drops[i] = 0;
+          if (drops[i] * fontSize > height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+          drops[i]++;
         }
-        drops[i]++;
+
+        lastUpdateTime = timestamp;
       }
 
       animationFrameId = requestAnimationFrame(draw);
     };
 
     setupCanvas();
-    draw();
+    animationFrameId = requestAnimationFrame(draw);
 
     window.addEventListener("resize", setupCanvas);
 
