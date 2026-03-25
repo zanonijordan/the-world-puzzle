@@ -15,3 +15,9 @@
 - [x] Rodar `npm run lint`
 - [x] Rodar `npm run build`
 - [ ] Validar checklist de testes manuais de login social
+
+## Páginas institucionais (Privacidade e Exclusão)
+
+- [x] Criar `src/app/privacy/page.tsx` com Política de Privacidade do Mundo Puzzle
+- [x] Criar `src/app/delete/page.tsx` com instruções de exclusão de dados/conta
+- [x] Revisar consistência visual (legibilidade e espaçamento) das duas páginas
