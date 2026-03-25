@@ -20,7 +20,7 @@ export function LoginForm() {
         email,
         password,
         redirect: false,
-        callbackUrl: "/",
+        callbackUrl: "/admin",
       });
 
       if (result?.error) {

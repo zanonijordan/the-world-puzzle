@@ -3,4 +3,4 @@
 
 - [x] Fix admin dashboard access after admin login
 - [x] Update NextAuth session strategy/token callbacks for middleware compatibility
-- [ ] Validate critical path: login admin -> /admin -> /admin/posts
+- [x] Validate critical path: login admin -> /admin -> /admin/posts
