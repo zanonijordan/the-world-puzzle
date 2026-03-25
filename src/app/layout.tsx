@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+
+import { SiteHeader } from "@/components/site-header";
+import { auth } from "@/lib/auth";
+
 import "./globals.css";
 
 const geistSans = Geist({
@@ -18,16 +22,16 @@ export const metadata: Metadata = {
     "Blog cyberpunk sobre histórias ocultas, jornalismo investigativo, análise de filmes e filosofia.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
   return (
     <html lang="pt-BR">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <SiteHeader session={session} />
         {children}
       </body>
     </html>
