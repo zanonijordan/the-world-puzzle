@@ -17,7 +17,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   trustHost: true,
   adapter: PrismaAdapter(prisma),
   session: {
-    strategy: "database",
+    strategy: "jwt",
   },
   pages: {
     signIn: "/login",
@@ -59,16 +59,23 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
-    async session({ session, user }) {
-      if (session.user) {
-        session.user.id = user.id;
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
 
         const dbUser = await prisma.user.findUnique({
           where: { id: user.id },
           select: { role: true },
         });
 
-        session.user.role = dbUser?.role ?? "MEMBER";
+        token.role = dbUser?.role ?? "MEMBER";
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as string;
+        session.user.role = (token.role as "ADMIN" | "MEMBER") ?? "MEMBER";
       }
       return session;
     },
