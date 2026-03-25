@@ -6,3 +6,12 @@
 - [x] Adicionar `directUrl` no `prisma/schema.prisma`
 - [x] Preparar `.env` com `DATABASE_URL` e `DATABASE_URL_UNPOOLED`
 - [x] Confirmar comando de sincronização Prisma com Neon
+
+## Correção OAuth social (Google/Facebook)
+
+- [x] Tornar `User.password` opcional em `prisma/schema.prisma`
+- [ ] Gerar migration Prisma para atualizar o banco (bloqueado por drift no banco remoto; não aplicado para evitar reset destrutivo)
+- [x] Rodar `npx prisma generate`
+- [x] Rodar `npm run lint`
+- [x] Rodar `npm run build`
+- [ ] Validar checklist de testes manuais de login social
