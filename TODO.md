@@ -1,3 +1,6 @@
 - [x] Update `src/lib/auth.ts` to fix NextAuth/Prisma adapter type mismatch
 - [x] Run `npm run build` to verify fix
 - [x] Mark tasks complete
+- [x] Refactor `middleware.ts` to reduce Edge bundle size
+- [x] Run `npm run build` to verify middleware fix
+- [x] Finalize task summary
