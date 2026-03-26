@@ -16,8 +16,7 @@ export async function middleware(request: NextRequest) {
 
   if (!token) {
     const loginUrl = new URL("/login", request.url);
-    const callbackUrl = `${pathname}${search}`;
-    loginUrl.searchParams.set("callbackUrl", callbackUrl);
+    loginUrl.searchParams.set("callbackUrl", `${pathname}${search}`);
     return NextResponse.redirect(loginUrl);
   }
 

@@ -56,6 +56,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           name: user.name,
           email: user.email,
           image: user.image,
+          role: user.role,
         };
       },
     }),
@@ -77,7 +78,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         if (dbUser) {
           token.id = dbUser.id;
-          token.role = (dbUser.role === "ADMIN" ? "ADMIN" : "MEMBER");
+          token.role = dbUser.role as "ADMIN" | "MEMBER";
         } else {
           token.role = "MEMBER";
         }
