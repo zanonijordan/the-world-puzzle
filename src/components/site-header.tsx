@@ -18,12 +18,6 @@ export function SiteHeader({ session }: SiteHeaderProps) {
         </Link>
 
         <nav className="site-header__nav" aria-label="Navegação principal">
-          <Link href="/" className="site-header__link">
-            Início
-          </Link>
-{/*           <Link href="/articles" className="site-header__link">
-            Artigos
-          </Link> */}
 
           {session?.user ? (
             <div className="site-header__auth">
