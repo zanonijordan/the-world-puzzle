@@ -1,5 +1,6 @@
-- [x] Ajustar middleware para evitar redirecionamento problemático e preservar callbackUrl com segurança.
-- [x] Ajustar login form para usar callbackUrl dinâmico (quando existir) em vez de fixo.
-- [x] Validar necessidade de ajuste nas páginas admin com requireAdmin para redirect controlado.
-- [x] Executar testes de caminho crítico de autenticação/admin.
-- [x] Atualizar TODO com progresso e concluir.
+# TODO - Ajustes Auth/Admin (NextAuth v5 + Prisma)
+
+- [x] Atualizar `src/lib/auth.ts` para sincronizar `token.role` de forma robusta (login inicial e requests subsequentes)
+- [x] Atualizar `src/types/next-auth.d.ts` para tipar Session e JWT com `id` e `role`
+- [x] Atualizar `middleware.ts` para proteger `/admin/:path*` exigindo role `ADMIN`, sem loop de redirect
+- [x] Revisar consistência dos redirects (`/login?callbackUrl=...` para não autenticado, `/` para não autorizado)

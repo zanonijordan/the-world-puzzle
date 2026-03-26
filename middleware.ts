@@ -5,8 +5,7 @@ import { getToken } from "next-auth/jwt";
 export async function middleware(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
-  // Safety guard: never redirect login route from this middleware.
-  if (pathname.startsWith("/login")) {
+  if (!pathname.startsWith("/admin")) {
     return NextResponse.next();
   }
 
@@ -20,6 +19,10 @@ export async function middleware(request: NextRequest) {
     const callbackUrl = `${pathname}${search}`;
     loginUrl.searchParams.set("callbackUrl", callbackUrl);
     return NextResponse.redirect(loginUrl);
+  }
+
+  if (token.role !== "ADMIN") {
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
   return NextResponse.next();
