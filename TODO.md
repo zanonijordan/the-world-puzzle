@@ -1,4 +1,3 @@
-- [x] Atualizar `src/lib/auth.ts` com estratégia JWT e callbacks role
-- [x] Atualizar `src/types/next-auth.d.ts` com extensões Session/User/JWT
-- [x] Atualizar `middleware.ts` para proteção de `/admin` por role ADMIN
-- [x] Rodar `npm run lint` para validação básica
+- [x] Update `src/lib/auth.ts` to fix NextAuth/Prisma adapter type mismatch
+- [x] Run `npm run build` to verify fix
+- [x] Mark tasks complete
