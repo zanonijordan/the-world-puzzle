@@ -18,7 +18,6 @@ export function SiteHeader({ session }: SiteHeaderProps) {
         </Link>
 
         <nav className="site-header__nav" aria-label="Navegação principal">
-
           {session?.user ? (
             <div className="site-header__auth">
               <span className="site-header__user" title={session.user.email ?? undefined}>
