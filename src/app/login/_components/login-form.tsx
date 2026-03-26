@@ -1,13 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useTransition } from "react";
+import { useSearchParams } from "next/navigation";
+import { useMemo, useState, useTransition } from "react";
 
 import { signIn } from "next-auth/react";
 
 export function LoginForm() {
+  const searchParams = useSearchParams();
   const [error, setError] = useState<string>("");
   const [isPending, startTransition] = useTransition();
+
+  const callbackUrl = useMemo(() => {
+    const raw = searchParams.get("callbackUrl");
+    if (!raw) return "/admin";
+    // Prevent open redirect by only allowing relative callback paths.
+    if (!raw.startsWith("/")) return "/admin";
+    return raw;
+  }, [searchParams]);
 
   function handleCredentialsLogin(formData: FormData) {
     setError("");
@@ -20,7 +30,7 @@ export function LoginForm() {
         email,
         password,
         redirect: false,
-        callbackUrl: "/admin",
+        callbackUrl,
       });
 
       if (result?.error) {
