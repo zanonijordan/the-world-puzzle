@@ -24,67 +24,69 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
   }
 
   return (
-    <main className="relative mx-auto min-h-screen w-full max-w-4xl px-6 py-16 text-white md:px-10">
-      <p className="text-xs uppercase tracking-[0.2em] text-[var(--neon-green)]">
-        {formatDate(post.publishedAt ?? post.createdAt)}
-      </p>
-
-      <h1 className="mt-3 text-4xl font-black leading-tight md:text-5xl">{post.title}</h1>
-
-      <div className="mt-5 flex flex-wrap gap-2">
-        {post.categories.map((category) => (
-          <span
-            key={category.id}
-            className="rounded border border-[var(--neon-pink)]/40 px-2 py-1 text-xs text-[var(--neon-pink)]"
-          >
-            {category.name}
-          </span>
-        ))}
-        {post.tags.map(({ tag }) => (
-          <span
-            key={tag.id}
-            className="rounded border border-[var(--neon-green)]/40 px-2 py-1 text-xs text-[var(--neon-green)]"
-          >
-            #{tag.name}
-          </span>
-        ))}
-      </div>
-
-      {post.coverImage ? (
-        <Image
-          src={post.coverImage}
-          alt={post.title}
-          width={1200}
-          height={675}
-          className="mt-8 max-h-[480px] w-full rounded-xl border border-white/10 object-cover"
-        />
-      ) : null}
-
-      {post.excerpt ? (
-        <p className="mt-8 rounded-lg border border-[var(--neon-green)]/25 bg-black/45 p-5 text-lg text-green-100/90">
-          {post.excerpt}
+    <main className="relative min-h-screen bg-white pt-24 text-zinc-900">
+      <div className="mx-auto w-full max-w-4xl px-6 py-12 md:px-10 md:py-16">
+        <p className="text-xs uppercase tracking-[0.15em] text-emerald-700">
+          {formatDate(post.publishedAt ?? post.createdAt)}
         </p>
-      ) : null}
 
-      <article className="prose prose-invert mt-8 max-w-none">
-        <div className="whitespace-pre-wrap text-green-100/90">{post.content}</div>
-      </article>
+        <h1 className="mt-3 text-4xl font-black leading-tight text-zinc-900 md:text-5xl">{post.title}</h1>
 
-      {post.videoUrl ? (
-        <section className="mt-10">
-          <h2 className="text-2xl font-bold text-[var(--neon-green)]">Vídeo relacionado</h2>
-          <div className="mt-4 overflow-hidden rounded-xl border border-[var(--neon-green)]/35">
-            <iframe
-              src={post.videoUrl}
-              title={`Vídeo de ${post.title}`}
-              className="h-[320px] w-full md:h-[420px]"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-            />
-          </div>
-        </section>
-      ) : null}
+        <div className="mt-5 flex flex-wrap gap-2">
+          {post.categories.map((category) => (
+            <span
+              key={category.id}
+              className="rounded border border-fuchsia-300 bg-fuchsia-50 px-2 py-1 text-xs text-fuchsia-700"
+            >
+              {category.name}
+            </span>
+          ))}
+          {post.tags.map(({ tag }) => (
+            <span
+              key={tag.id}
+              className="rounded border border-emerald-300 bg-emerald-50 px-2 py-1 text-xs text-emerald-700"
+            >
+              #{tag.name}
+            </span>
+          ))}
+        </div>
+
+        {post.coverImage ? (
+          <Image
+            src={post.coverImage}
+            alt={post.title}
+            width={1200}
+            height={675}
+            className="mt-8 max-h-[480px] w-full rounded-xl border border-zinc-200 object-cover shadow-sm"
+          />
+        ) : null}
+
+        {post.excerpt ? (
+          <p className="mt-8 rounded-xl border border-zinc-200 bg-zinc-50 p-5 text-lg leading-relaxed text-zinc-700">
+            {post.excerpt}
+          </p>
+        ) : null}
+
+        <article className="mt-8 max-w-none rounded-xl border border-zinc-200 bg-white p-6 shadow-sm md:p-8">
+          <div className="whitespace-pre-wrap text-base leading-relaxed text-zinc-800">{post.content}</div>
+        </article>
+
+        {post.videoUrl ? (
+          <section className="mt-10">
+            <h2 className="text-2xl font-bold text-zinc-900">Vídeo relacionado</h2>
+            <div className="mt-4 overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm">
+              <iframe
+                src={post.videoUrl}
+                title={`Vídeo de ${post.title}`}
+                className="h-[320px] w-full md:h-[420px]"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              />
+            </div>
+          </section>
+        ) : null}
+      </div>
     </main>
   );
 }

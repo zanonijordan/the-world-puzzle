@@ -1,6 +1,4 @@
-- [x] Update `src/lib/auth.ts` to fix NextAuth/Prisma adapter type mismatch
-- [x] Run `npm run build` to verify fix
-- [x] Mark tasks complete
-- [x] Refactor `middleware.ts` to reduce Edge bundle size
-- [x] Run `npm run build` to verify middleware fix
-- [x] Finalize task summary
+- [x] Atualizar layout de `src/app/articles/[slug]/page.tsx` para estilo claro (igual à área de artigos)
+- [x] Ajustar tipografia e espaçamento do conteúdo para melhor legibilidade
+- [x] Ajustar estilos de categorias, tags, excerpt, imagem e vídeo para tema claro
+- [x] Revisar consistência visual final
