@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { prisma } from "@/lib/prisma";
 import { requireMember } from "@/lib/session";
+import { RemoveSavedPostButton } from "./_components/remove-saved-post-button";
 
 function formatDate(date: Date | null) {
   if (!date) return "Data não informada";
@@ -71,10 +72,11 @@ export default async function MemberSavedPostsPage() {
                   <p className="mt-3 line-clamp-4 text-zinc-600">Clique para ler a análise completa.</p>
                 )}
 
-                <div className="mt-6">
+                <div className="mt-6 flex flex-wrap items-center gap-3">
                   <Link href={`/articles/${post.slug}`} className="cyber-btn inline-block">
                     Ler artigo
                   </Link>
+                  <RemoveSavedPostButton postId={post.id} />
                 </div>
               </article>
             ))}

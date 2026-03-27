@@ -1,4 +1,3 @@
-- [x] Revisar localização do botão "Meus salvos" e confirmar regra com o usuário.
-- [x] Definir comportamento da home após login: ocultar botão "Área de Membros" (Opção C).
-- [x] Implementar lógica de sessão em `src/app/page.tsx` para exibir "Área de Membros" apenas quando não logado.
-- [x] Manter comportamento atual na página `/articles` sem alterações adicionais.
+- [x] Criar componente client para remover post salvo com feedback.
+- [x] Integrar botão de remoção na tela `member/saved-posts`.
+- [x] Atualizar progresso do TODO após concluir etapas.
