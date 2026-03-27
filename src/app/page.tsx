@@ -1,5 +1,6 @@
 import Link from "next/link";
 import HeroMatrix from "@/components/HeroMatrix";
+import { auth } from "@/lib/auth";
 
 const categories = [
   {
@@ -16,7 +17,9 @@ const categories = [
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth();
+  const isLoggedIn = !!session?.user;
   return (
     <div className="matrix-root relative min-h-screen overflow-hidden bg-[var(--bg-dark)] text-white">
       <HeroMatrix />
@@ -38,9 +41,11 @@ export default function Home() {
           <Link href="/articles" className="btn btn-green">
             Explorar Artigos
           </Link>
-          <Link href="/login" className="btn btn-pink">
-            Área de Membros
-          </Link>
+          {!isLoggedIn ? (
+            <Link href="/login" className="btn btn-pink">
+              Área de Membros
+            </Link>
+          ) : null}
         </div>
 
         <section className="categories-grid">
