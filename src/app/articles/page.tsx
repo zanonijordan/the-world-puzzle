@@ -1,4 +1,8 @@
 import Link from "next/link";
+
+import { SavePostButton } from "./_components/save-post-button";
+import { auth } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 import { getPublishedPosts } from "@/lib/posts";
 
 function formatDate(date: Date | null) {
@@ -9,7 +13,21 @@ function formatDate(date: Date | null) {
 }
 
 export default async function ArticlesPage() {
-  const posts = await getPublishedPosts();
+  const [posts, session] = await Promise.all([getPublishedPosts(), auth()]);
+
+  const isMember = !!session?.user && (session.user.role ?? "").toUpperCase() === "MEMBER";
+
+  const savedIds = isMember
+    ? new Set(
+        (
+          await prisma.$queryRaw<Array<{ postId: string }>>`
+            SELECT "postId"
+            FROM "PostLike"
+            WHERE "userId" = ${session!.user.id}
+          `
+        ).map((item: { postId: string }) => item.postId),
+      )
+    : new Set<string>();
 
   return (
     <main className="relative min-h-screen bg-white pt-24 text-zinc-900">
@@ -68,10 +86,11 @@ export default async function ArticlesPage() {
                   ))}
                 </div>
 
-                <div className="mt-6">
+                <div className="mt-6 flex flex-wrap items-center gap-3">
                   <Link href={`/articles/${post.slug}`} className="cyber-btn inline-block">
                     Ler artigo
                   </Link>
+                  {isMember ? <SavePostButton postId={post.id} initialSaved={savedIds.has(post.id)} /> : null}
                 </div>
               </article>
             ))}

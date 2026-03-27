@@ -17,6 +17,7 @@ model User {
   password      String?
   role          String    @default("MEMBER")
   posts         Post[]
+  likes         PostLike[]
   accounts      Account[]
   sessions      Session[]
   createdAt     DateTime  @default(now())
@@ -59,20 +60,21 @@ model VerificationToken {
 }
 
 model Post {
-  id          String    @id @default(cuid())
+  id          String     @id @default(cuid())
   title       String
-  slug        String    @unique
+  slug        String     @unique
   excerpt     String?
   content     String
   coverImage  String?
   videoUrl    String?
   status      PostStatus @default(DRAFT)
   authorId    String
-  author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  author      User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
   categories  Category[]
   tags        PostTag[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  likes       PostLike[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
   publishedAt DateTime?
 }
 
@@ -101,6 +103,18 @@ model PostTag {
   tag    Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
   @@id([postId, tagId])
+}
+
+model PostLike {
+  userId    String
+  postId    String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@id([userId, postId])
+  @@index([postId])
 }
 
 enum PostStatus {

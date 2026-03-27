@@ -1,11 +1,14 @@
-# TODO - Admin Posts UX Profissional (Edição/Publicação/Exclusão)
+# TODO - Área de membros: posts salvos (likes)
 
-- [x] Criar componente client interativo para gerenciamento de posts no admin
-- [x] Implementar seleção de post ao clicar no card (abrir editor na tela)
-- [x] Implementar formulário de edição completo no painel lateral
-- [x] Implementar ação de publicar/voltar para rascunho
-- [x] Implementar exclusão com confirmação visual explícita
-- [x] Integrar componente interativo na página `src/app/admin/posts/page.tsx`
-- [x] Garantir revalidação e atualização da lista após ações
-- [x] Atualizar este TODO com progresso
-- [ ] Rodar lint para validação final
+- [x] Atualizar Prisma com modelo de likes/salvos entre User e Post
+- [x] Aplicar migração Prisma para nova estrutura
+- [x] Implementar `requireMember()` em `src/lib/session.ts`
+- [x] Criar endpoint `POST /api/member/posts/[id]/like`
+- [x] Criar endpoint `DELETE /api/member/posts/[id]/like`
+- [x] Criar endpoint `GET /api/member/liked-posts`
+- [x] Criar componente client de salvar/remover post em artigos
+- [x] Integrar botão de salvar/remover em `src/app/articles/page.tsx`
+- [x] Criar página `/member/saved-posts` para listar salvos do membro
+- [x] Atualizar `src/components/site-header.tsx` com link "Meus salvos" para MEMBER
+- [x] Executar critical-path testing (salvar/remover/listar)
+- [x] Atualizar TODO com progresso e consolidar resultado

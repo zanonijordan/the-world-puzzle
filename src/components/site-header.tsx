@@ -9,6 +9,8 @@ type SiteHeaderProps = {
 
 export function SiteHeader({ session }: SiteHeaderProps) {
   const userName = session?.user?.name?.trim() || session?.user?.email || "Membro";
+  const role = (session?.user?.role ?? "").toUpperCase();
+  const isMember = !!session?.user && role === "MEMBER";
 
   return (
     <header className="site-header">
@@ -20,6 +22,11 @@ export function SiteHeader({ session }: SiteHeaderProps) {
         <nav className="site-header__nav" aria-label="Navegação principal">
           {session?.user ? (
             <div className="site-header__auth">
+              {isMember ? (
+                <Link href="/member/saved-posts" className="site-header__cta site-header__cta--login">
+                  Meus salvos
+                </Link>
+              ) : null}
               <span className="site-header__user" title={session.user.email ?? undefined}>
                 {userName}
               </span>

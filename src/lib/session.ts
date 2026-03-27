@@ -22,3 +22,14 @@ export async function requireAdmin() {
 
   return session;
 }
+
+export async function requireMember() {
+  const session = await requireAuth();
+
+  const role = (session.user.role ?? "").toUpperCase();
+  if (role === "ADMIN") {
+    throw new Error("FORBIDDEN");
+  }
+
+  return session;
+}
