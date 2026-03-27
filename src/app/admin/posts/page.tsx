@@ -2,6 +2,7 @@ import Link from "next/link";
 import { revalidatePath } from "next/cache";
 import { PostStatus } from "@prisma/client";
 
+import { PostsManager } from "./_components/posts-manager";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/session";
 
@@ -138,25 +139,7 @@ export default async function AdminPostsPage() {
         </form>
       </section>
 
-      <section className="mt-6 rounded-xl border border-[var(--neon-green)]/30 bg-black/55 p-6">
-        <h2 className="text-lg font-bold">Posts cadastrados</h2>
-        {posts.length === 0 ? (
-          <p className="mt-3 text-sm text-green-100/80">Nenhum post cadastrado.</p>
-        ) : (
-          <ul className="mt-4 space-y-4">
-            {posts.map((post) => (
-              <li key={post.id} className="rounded border border-[var(--neon-green)]/25 bg-black/40 p-4">
-                <p className="text-lg font-semibold text-white">{post.title}</p>
-                <p className="text-sm text-green-100/80">slug: {post.slug}</p>
-                <p className="text-sm text-green-100/80">status: {post.status}</p>
-                <p className="text-sm text-green-100/80">capa: {post.coverImage ?? "não informada"}</p>
-                <p className="text-sm text-green-100/80">vídeo: {post.videoUrl ?? "não informado"}</p>
-                <p className="mt-2 text-xs text-green-100/60">id: {post.id}</p>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+      <PostsManager posts={posts} categories={categories} tags={tags} />
     </main>
   );
 }

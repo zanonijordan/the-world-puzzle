@@ -1,4 +1,11 @@
-- [x] Atualizar layout de `src/app/articles/[slug]/page.tsx` para estilo claro (igual à área de artigos)
-- [x] Ajustar tipografia e espaçamento do conteúdo para melhor legibilidade
-- [x] Ajustar estilos de categorias, tags, excerpt, imagem e vídeo para tema claro
-- [x] Revisar consistência visual final
+# TODO - Admin Posts UX Profissional (Edição/Publicação/Exclusão)
+
+- [x] Criar componente client interativo para gerenciamento de posts no admin
+- [x] Implementar seleção de post ao clicar no card (abrir editor na tela)
+- [x] Implementar formulário de edição completo no painel lateral
+- [x] Implementar ação de publicar/voltar para rascunho
+- [x] Implementar exclusão com confirmação visual explícita
+- [x] Integrar componente interativo na página `src/app/admin/posts/page.tsx`
+- [x] Garantir revalidação e atualização da lista após ações
+- [x] Atualizar este TODO com progresso
+- [ ] Rodar lint para validação final
