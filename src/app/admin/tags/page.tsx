@@ -35,6 +35,26 @@ async function createTagAction(formData: FormData) {
   revalidatePath("/admin/posts");
 }
 
+async function deleteTagAction(formData: FormData) {
+  "use server";
+
+  await requireAdmin();
+
+  const id = String(formData.get("id") ?? "").trim();
+  if (!id) return;
+
+  try {
+    await prisma.tag.delete({
+      where: { id },
+    });
+  } catch {
+    return;
+  }
+
+  revalidatePath("/admin/tags");
+  revalidatePath("/admin/posts");
+}
+
 export default async function AdminTagsPage() {
   await requireAdmin();
 
@@ -87,9 +107,22 @@ export default async function AdminTagsPage() {
                 key={tag.id}
                 className="rounded border border-[var(--neon-green)]/25 bg-black/40 p-3 text-sm"
               >
-                <p className="font-semibold text-white">{tag.name}</p>
-                <p className="text-green-100/80">slug: {tag.slug}</p>
-                <p className="text-green-100/60">id: {tag.id}</p>
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="font-semibold text-white">{tag.name}</p>
+                    <p className="text-green-100/80">slug: {tag.slug}</p>
+                    <p className="text-green-100/60">id: {tag.id}</p>
+                  </div>
+                  <form action={deleteTagAction}>
+                    <input type="hidden" name="id" value={tag.id} />
+                    <button
+                      type="submit"
+                      className="rounded border border-red-400/40 bg-red-500/10 px-3 py-1 text-xs text-red-200 transition hover:bg-red-500/20"
+                    >
+                      Excluir
+                    </button>
+                  </form>
+                </div>
               </li>
             ))}
           </ul>

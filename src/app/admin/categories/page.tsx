@@ -35,6 +35,26 @@ async function createCategoryAction(formData: FormData) {
   revalidatePath("/admin/posts");
 }
 
+async function deleteCategoryAction(formData: FormData) {
+  "use server";
+
+  await requireAdmin();
+
+  const id = String(formData.get("id") ?? "").trim();
+  if (!id) return;
+
+  try {
+    await prisma.category.delete({
+      where: { id },
+    });
+  } catch {
+    return;
+  }
+
+  revalidatePath("/admin/categories");
+  revalidatePath("/admin/posts");
+}
+
 export default async function AdminCategoriesPage() {
   await requireAdmin();
 
@@ -87,9 +107,22 @@ export default async function AdminCategoriesPage() {
                 key={category.id}
                 className="rounded border border-[var(--neon-green)]/25 bg-black/40 p-3 text-sm"
               >
-                <p className="font-semibold text-white">{category.name}</p>
-                <p className="text-green-100/80">slug: {category.slug}</p>
-                <p className="text-green-100/60">id: {category.id}</p>
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="font-semibold text-white">{category.name}</p>
+                    <p className="text-green-100/80">slug: {category.slug}</p>
+                    <p className="text-green-100/60">id: {category.id}</p>
+                  </div>
+                  <form action={deleteCategoryAction}>
+                    <input type="hidden" name="id" value={category.id} />
+                    <button
+                      type="submit"
+                      className="rounded border border-red-400/40 bg-red-500/10 px-3 py-1 text-xs text-red-200 transition hover:bg-red-500/20"
+                    >
+                      Excluir
+                    </button>
+                  </form>
+                </div>
               </li>
             ))}
           </ul>
