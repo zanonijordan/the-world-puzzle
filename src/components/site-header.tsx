@@ -11,6 +11,7 @@ export function SiteHeader({ session }: SiteHeaderProps) {
   const userName = session?.user?.name?.trim() || session?.user?.email || "Membro";
   const role = (session?.user?.role ?? "").toUpperCase();
   const isMember = !!session?.user && role === "MEMBER";
+  const isAdmin = !!session?.user && role === "ADMIN";
 
   return (
     <header className="site-header">
@@ -25,6 +26,11 @@ export function SiteHeader({ session }: SiteHeaderProps) {
               {isMember ? (
                 <Link href="/member/saved-posts" className="site-header__cta site-header__cta--login">
                   Meus salvos
+                </Link>
+              ) : null}
+              {isAdmin ? (
+                <Link href="/admin" className="site-header__cta site-header__cta--login">
+                  Painel Admin
                 </Link>
               ) : null}
               <span className="site-header__user" title={session.user.email ?? undefined}>

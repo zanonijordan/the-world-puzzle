@@ -27,7 +27,15 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
+  let session = null;
+
+  try {
+    session = await auth();
+  } catch (error) {
+    console.warn("[RootLayout] Failed to resolve session via auth()", error);
+    session = null;
+  }
+
   return (
     <html lang="pt-BR">
       <body suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} antialiased`}>

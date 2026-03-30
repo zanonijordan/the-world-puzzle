@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState, useTransition } from "react";
+import RichTextEditor from "@/components/RichTextEditor";
 
 type Category = {
   id: string;
@@ -223,11 +224,9 @@ export function PostsManager({ posts, categories, tags }: Props) {
               placeholder="Resumo"
               className="rounded border border-white/20 bg-black/40 p-3"
             />
-            <textarea
+            <RichTextEditor
               value={form.content}
-              onChange={(event) => setForm((prev) => (prev ? { ...prev, content: event.target.value } : prev))}
-              placeholder="Conteúdo"
-              className="min-h-40 rounded border border-white/20 bg-black/40 p-3"
+              onChange={(html) => setForm((prev) => (prev ? { ...prev, content: html } : prev))}
             />
             <input
               value={form.coverImage}
