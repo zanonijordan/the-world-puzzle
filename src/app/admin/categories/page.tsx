@@ -1,7 +1,39 @@
 import Link from "next/link";
+import { revalidatePath } from "next/cache";
 
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/session";
+
+async function createCategoryAction(formData: FormData) {
+  "use server";
+
+  await requireAdmin();
+
+  const name = String(formData.get("name") ?? "").trim();
+  const slugInput = String(formData.get("slug") ?? "").trim();
+
+  if (!name) return;
+
+  const slug =
+    slugInput ||
+    name
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)+/g, "");
+
+  try {
+    await prisma.category.create({
+      data: { name, slug },
+    });
+  } catch {
+    return;
+  }
+
+  revalidatePath("/admin/categories");
+  revalidatePath("/admin/posts");
+}
 
 export default async function AdminCategoriesPage() {
   await requireAdmin();
@@ -25,11 +57,23 @@ export default async function AdminCategoriesPage() {
       </header>
 
       <section className="rounded-xl border border-[var(--neon-green)]/30 bg-black/55 p-6">
-        <h2 className="text-lg font-bold">Criar categoria (API)</h2>
-        <p className="mt-2 text-sm text-green-100/80">
-          Endpoint: <code>POST /api/admin/categories</code> com{" "}
-          <code>{`{ "name": "Nova categoria", "slug": "nova-categoria" }`}</code>
-        </p>
+        <h2 className="text-lg font-bold">Criar categoria</h2>
+        <form action={createCategoryAction} className="mt-4 grid gap-3 md:grid-cols-[1fr_1fr_auto]">
+          <input
+            name="name"
+            placeholder="Nome da categoria"
+            className="rounded border border-white/20 bg-black/40 p-3"
+            required
+          />
+          <input
+            name="slug"
+            placeholder="Slug (opcional)"
+            className="rounded border border-white/20 bg-black/40 p-3"
+          />
+          <button type="submit" className="cyber-btn h-fit self-end">
+            Criar categoria
+          </button>
+        </form>
       </section>
 
       <section className="mt-6 rounded-xl border border-[var(--neon-green)]/30 bg-black/55 p-6">
@@ -38,7 +82,7 @@ export default async function AdminCategoriesPage() {
           <p className="mt-3 text-sm text-green-100/80">Nenhuma categoria cadastrada.</p>
         ) : (
           <ul className="mt-4 space-y-3">
-            {categories.map((category) => (
+            {categories.map((category: { id: string; name: string; slug: string }) => (
               <li
                 key={category.id}
                 className="rounded border border-[var(--neon-green)]/25 bg-black/40 p-3 text-sm"

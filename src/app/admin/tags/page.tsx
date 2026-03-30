@@ -1,7 +1,39 @@
 import Link from "next/link";
+import { revalidatePath } from "next/cache";
 
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/session";
+
+async function createTagAction(formData: FormData) {
+  "use server";
+
+  await requireAdmin();
+
+  const name = String(formData.get("name") ?? "").trim();
+  const slugInput = String(formData.get("slug") ?? "").trim();
+
+  if (!name) return;
+
+  const slug =
+    slugInput ||
+    name
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)+/g, "");
+
+  try {
+    await prisma.tag.create({
+      data: { name, slug },
+    });
+  } catch {
+    return;
+  }
+
+  revalidatePath("/admin/tags");
+  revalidatePath("/admin/posts");
+}
 
 export default async function AdminTagsPage() {
   await requireAdmin();
@@ -25,11 +57,23 @@ export default async function AdminTagsPage() {
       </header>
 
       <section className="rounded-xl border border-[var(--neon-green)]/30 bg-black/55 p-6">
-        <h2 className="text-lg font-bold">Criar tag (API)</h2>
-        <p className="mt-2 text-sm text-green-100/80">
-          Endpoint: <code>POST /api/admin/tags</code> com{" "}
-          <code>{`{ "name": "Distopia", "slug": "distopia" }`}</code>
-        </p>
+        <h2 className="text-lg font-bold">Criar tag</h2>
+        <form action={createTagAction} className="mt-4 grid gap-3 md:grid-cols-[1fr_1fr_auto]">
+          <input
+            name="name"
+            placeholder="Nome da tag"
+            className="rounded border border-white/20 bg-black/40 p-3"
+            required
+          />
+          <input
+            name="slug"
+            placeholder="Slug (opcional)"
+            className="rounded border border-white/20 bg-black/40 p-3"
+          />
+          <button type="submit" className="cyber-btn h-fit self-end">
+            Criar tag
+          </button>
+        </form>
       </section>
 
       <section className="mt-6 rounded-xl border border-[var(--neon-green)]/30 bg-black/55 p-6">
@@ -38,7 +82,7 @@ export default async function AdminTagsPage() {
           <p className="mt-3 text-sm text-green-100/80">Nenhuma tag cadastrada.</p>
         ) : (
           <ul className="mt-4 space-y-3">
-            {tags.map((tag) => (
+            {tags.map((tag: { id: string; name: string; slug: string }) => (
               <li
                 key={tag.id}
                 className="rounded border border-[var(--neon-green)]/25 bg-black/40 p-3 text-sm"
