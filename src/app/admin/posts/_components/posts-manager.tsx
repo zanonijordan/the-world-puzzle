@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useMemo, useState, useTransition } from "react";
 import RichTextEditor from "@/components/RichTextEditor";
 
@@ -234,6 +235,18 @@ export function PostsManager({ posts, categories, tags }: Props) {
               placeholder="URL da capa"
               className="rounded border border-white/20 bg-black/40 p-3"
             />
+            {form.coverImage ? (
+              <div className="overflow-hidden rounded-lg border border-zinc-700 bg-zinc-900/50 p-2">
+                <p className="mb-2 text-xs text-zinc-400">Preview da capa</p>
+                <Image
+                  src={form.coverImage}
+                  alt="Preview da capa"
+                  width={1200}
+                  height={675}
+                  className="h-auto max-h-64 w-full rounded-md object-cover"
+                />
+              </div>
+            ) : null}
             <input
               value={form.videoUrl}
               onChange={(event) => setForm((prev) => (prev ? { ...prev, videoUrl: event.target.value } : prev))}

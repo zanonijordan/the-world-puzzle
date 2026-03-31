@@ -1,9 +1,22 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { SavePostButton } from "./_components/save-post-button";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getPublishedPosts } from "@/lib/posts";
+
+type PostListItem = {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string | null;
+  coverImage: string | null;
+  publishedAt: Date | null;
+  createdAt: Date;
+  categories: Array<{ id: string; name: string }>;
+  tags: Array<{ tag: { id: string; name: string } }>;
+};
 
 function formatDate(date: Date | null) {
   if (!date) return "Data não informada";
@@ -48,7 +61,7 @@ export default async function ArticlesPage() {
           </section>
         ) : (
           <section className="grid gap-6 md:grid-cols-2">
-            {posts.map((post) => (
+            {(posts as PostListItem[]).map((post: PostListItem) => (
               <article
                 key={post.id}
                 className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-fuchsia-300 hover:shadow-md"
@@ -56,6 +69,18 @@ export default async function ArticlesPage() {
                 <p className="text-xs uppercase tracking-[0.15em] text-emerald-700">
                   {formatDate(post.publishedAt ?? post.createdAt)}
                 </p>
+
+                {post.coverImage ? (
+                  <div className="mb-4 overflow-hidden rounded-xl border border-zinc-200">
+                    <Image
+                      src={post.coverImage}
+                      alt={post.title}
+                      width={1200}
+                      height={675}
+                      className="h-48 w-full object-cover"
+                    />
+                  </div>
+                ) : null}
 
                 <h2 className="mt-2 text-2xl font-bold text-zinc-900">{post.title}</h2>
 
@@ -68,7 +93,7 @@ export default async function ArticlesPage() {
                 )}
 
                 <div className="mt-5 flex flex-wrap gap-2">
-                  {post.categories.map((category) => (
+                  {post.categories.map((category: { id: string; name: string }) => (
                     <span
                       key={category.id}
                       className="rounded border border-fuchsia-300 bg-fuchsia-50 px-2 py-1 text-xs text-fuchsia-700"
@@ -76,7 +101,7 @@ export default async function ArticlesPage() {
                       {category.name}
                     </span>
                   ))}
-                  {post.tags.slice(0, 3).map(({ tag }) => (
+                  {post.tags.slice(0, 3).map(({ tag }: { tag: { id: string; name: string } }) => (
                     <span
                       key={tag.id}
                       className="rounded border border-emerald-300 bg-emerald-50 px-2 py-1 text-xs text-emerald-700"

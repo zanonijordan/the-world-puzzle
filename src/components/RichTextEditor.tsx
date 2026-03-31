@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import Image from "@tiptap/extension-image";
+import { useUploadThing } from "@/lib/uploadthing";
 
 type RichTextEditorProps = {
   value: string;
@@ -14,6 +16,10 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
     extensions: [
       StarterKit.configure({
         heading: { levels: [2, 3] },
+      }),
+      Image.configure({
+        inline: false,
+        allowBase64: false,
       }),
     ],
     content: value || "<p></p>",
@@ -37,6 +43,26 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
     }
   }, [editor, value]);
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const { startUpload, isUploading } = useUploadThing("editorUploader", {
+    onClientUploadComplete: (res) => {
+      const uploaded = res?.[0];
+      if (!uploaded || !editor) return;
+      editor.chain().focus().setImage({ src: uploaded.ufsUrl }).run();
+    },
+    onUploadError: (error) => {
+      console.error("Erro no upload da imagem do editor:", error);
+    },
+  });
+
+  async function handleImageFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    await startUpload([file]);
+    event.target.value = "";
+  }
+
   if (!editor) return null;
 
   const setLink = () => {
@@ -54,6 +80,7 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
 
     editor.chain().focus().extendMarkRange("link").setLink({ href: trimmedUrl }).run();
   };
+
 
   const baseButtonClass =
     "rounded border border-zinc-700 bg-zinc-900 px-3 py-1 text-sm text-zinc-200 transition hover:bg-zinc-800";
@@ -146,6 +173,23 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
         >
           Bloco de Código
         </button>
+
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          className={baseButtonClass}
+          disabled={isUploading}
+        >
+          {isUploading ? "Enviando imagem..." : "Imagem"}
+        </button>
+
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleImageFileChange}
+          className="hidden"
+        />
 
         <button
           type="button"

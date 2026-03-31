@@ -33,7 +33,7 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
         <h1 className="mt-3 text-4xl font-black leading-tight text-zinc-900 md:text-5xl">{post.title}</h1>
 
         <div className="mt-5 flex flex-wrap gap-2">
-          {post.categories.map((category) => (
+          {post.categories.map((category: { id: string; name: string }) => (
             <span
               key={category.id}
               className="rounded border border-fuchsia-300 bg-fuchsia-50 px-2 py-1 text-xs text-fuchsia-700"
@@ -41,7 +41,7 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
               {category.name}
             </span>
           ))}
-          {post.tags.map(({ tag }) => (
+          {post.tags.map(({ tag }: { tag: { id: string; name: string } }) => (
             <span
               key={tag.id}
               className="rounded border border-emerald-300 bg-emerald-50 px-2 py-1 text-xs text-emerald-700"
@@ -57,6 +57,8 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
             alt={post.title}
             width={1200}
             height={675}
+            loading="eager"
+            priority
             className="mt-8 max-h-[480px] w-full rounded-xl border border-zinc-200 object-cover shadow-sm"
           />
         ) : null}
@@ -67,8 +69,11 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
           </p>
         ) : null}
 
-        <article className="mt-8 max-w-none rounded-xl border border-zinc-200 bg-white p-6 shadow-sm md:p-8">
-          <div className="whitespace-pre-wrap text-base leading-relaxed text-zinc-800">{post.content}</div>
+        <article className="mt-8 max-w-none rounded-xl border border-zinc-200 bg-zinc-950 p-6 shadow-sm md:p-8">
+          <div
+            className="prose prose-invert max-w-none text-zinc-100"
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
         </article>
 
         {post.videoUrl ? (

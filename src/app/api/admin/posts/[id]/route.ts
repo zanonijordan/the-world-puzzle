@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
+import { UTApi } from "uploadthing/server";
 
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/session";
 
 import { handleAdminApiError } from "../../_utils";
+
+const utapi = new UTApi();
 
 function slugify(value: string) {
   return value
@@ -13,6 +16,31 @@ function slugify(value: string) {
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)+/g, "");
+}
+
+function getUploadThingFileKey(fileUrl: string | null | undefined): string | null {
+  if (!fileUrl) return null;
+
+  try {
+    const parsed = new URL(fileUrl);
+    if (!parsed.hostname.includes("utfs.io")) return null;
+
+    const key = parsed.pathname.split("/").filter(Boolean).pop();
+    return key || null;
+  } catch {
+    return null;
+  }
+}
+
+async function tryDeleteUploadThingFileByUrl(fileUrl: string | null | undefined) {
+  const fileKey = getUploadThingFileKey(fileUrl);
+  if (!fileKey) return;
+
+  try {
+    await utapi.deleteFiles(fileKey);
+  } catch {
+    // Non-blocking cleanup: falha de remoção do arquivo não impede operação do post
+  }
 }
 
 export async function PUT(
@@ -46,6 +74,11 @@ export async function PUT(
     const slug = inputSlug || slugify(title);
 
     try {
+      const existingPost = await prisma.post.findUnique({
+        where: { id },
+        select: { coverImage: true },
+      });
+
       const post = await prisma.post.update({
         where: { id },
         data: {
@@ -71,6 +104,13 @@ export async function PUT(
         },
       });
 
+      if (
+        existingPost?.coverImage &&
+        existingPost.coverImage !== coverImage
+      ) {
+        await tryDeleteUploadThingFileByUrl(existingPost.coverImage);
+      }
+
       return NextResponse.json(post);
     } catch {
       return NextResponse.json({ error: "Não foi possível atualizar post." }, { status: 400 });
@@ -89,6 +129,15 @@ export async function DELETE(
     const { id } = await context.params;
 
     try {
+      const existingPost = await prisma.post.findUnique({
+        where: { id },
+        select: { coverImage: true },
+      });
+
+      if (existingPost?.coverImage) {
+        await tryDeleteUploadThingFileByUrl(existingPost.coverImage);
+      }
+
       await prisma.post.delete({ where: { id } });
       return NextResponse.json({ ok: true });
     } catch {
